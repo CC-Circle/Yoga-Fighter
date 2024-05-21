@@ -1,0 +1,50 @@
+# Yoga Fighter 🚀
+# Yoga Fighter Continuous Integration (CI) GitHub Actions tests
+
+name: Yoga Fighter CI
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Run the WebGL build
+    runs-on: ubuntu-latest
+    steps:
+      # actions/checkout@v4 を利用して作業ディレクトリに
+      # Unity プロジェクトの中身をダウンロードしてくる
+      - name: Check out my unity project.
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      #Cache
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      
+      # Free up disk space
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          
+      # GameCI の Builder を利用して、
+      # Unity プロジェクトのビルドを実行する
+      - name: Run the WebGL build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          # 今回は WebGL ビルドを行いたいため WebGL を指定する
+          # WebGL 以外の指定可能な値は下記に記載の値が利用可能
+          # ref: https://docs.unity3d.com/ScriptReference/BuildTarget.html
+          targetPlatform: WebGL
+
+          unityVersion: 2022.3.23f1
