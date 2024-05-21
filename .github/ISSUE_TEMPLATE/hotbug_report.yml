@@ -1,0 +1,83 @@
+name: Hot Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグレポートにご協力いただきありがとうございます！
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: もっと情報が必要な場合、どのように連絡すればよいですか？
+      placeholder: ex. email@example.com or Discord User Name
+    validations:
+      required: false
+  - type: input
+    id: working-branch
+    attributes:
+      label: ブランチ名
+      description: 作業ブランチ名は何ですか？
+      placeholder: ex. main
+    validations:
+      required: true
+  - type: input
+    id: working-Scene
+    attributes:
+      label: シーン名
+      description: 問題が発生したSceneは何ですか？
+      placeholder: ex. SampleScene
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 何が起きましたか？
+      description: また、どのようなことが起こると予想しましたか？
+      placeholder: Tell us what you see!
+      value: "バグの詳細"
+    validations:
+      required: true
+  - type: dropdown
+    id: unity-version
+    attributes:
+      label: どのUnity Editor Versionで問題が発生していますか？
+      multiple: true
+      options:
+        - 2022.3.19f1 (Apple Silicon)
+        - 2022.3.7f1 (Apple Silicon)
+        - 2021.3.35f1 (Apple Silicon)
+        - 2023.2.9f1 (Apple Silicon)
+        - other version
+    validations:
+      required: true
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: どのOSで問題が発生していますか？
+      multiple: true
+      options:
+        - macOS Monterey
+        - macOS Ventura
+        - macOS Sonoma
+        - Windows
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 発生したエラーや警告、このバグレポートに関係するログ
+      description: 関連するログ出力をコピー＆ペーストしてください。これは自動的にコードにフォーマットされますので、バックティックは必要ありません。
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: この問題を提出することにより、あなたは私たちの[行動規範](https://github.com/CC-Circle/github-practice/blob/main/CODE_OF_CONDUCT.md)に従うことに同意します。
+      options:
+        - label: 私はこのプロジェクトの行動規範に従うことに同意します。
+          required: true
