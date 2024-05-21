@@ -1,0 +1,49 @@
+# Yoga Fighter 🚀
+# Yoga Fighter Continuous Integration (CI) GitHub Actions tests
+
+name: Yoga Fighter CI
+on:
+  pull_request:
+    branches: [main] # 'main' ブランチへのプルリクエストが作成されたときに、このワークフローをトリガーする
+
+jobs:
+  build:
+    name: Run the macOS build (Apple Silicon) # ジョブ名: macOS ビルドを実行（Apple Silicon）
+    runs-on: ubuntu-latest # ジョブが実行される環境: 最新の Ubuntu
+
+    steps:
+      # actions/checkout@v4 を利用して作業ディレクトリに
+      # Unity プロジェクトの中身をダウンロードしてくる
+      - name: Check out my unity project. # ステップ名: Unity プロジェクトのチェックアウト
+        uses: actions/checkout@v4 # actions/checkout@v4 アクションを使用
+        with:
+          lfs: true # 大容量ファイルストレージ（LFS）を有効にする
+
+      # Cache
+      - name: Cache # ステップ名: キャッシュ
+        uses: actions/cache@v4 # actions/cache@v4 アクションを使用
+        with:
+          path: Library # キャッシュするディレクトリ: Unity の Library フォルダ
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }} # キャッシュキー: Assets, Packages, ProjectSettings フォルダのファイルハッシュ
+          restore-keys: |
+            Library- # キャッシュが見つからない場合に使用する復元キーのプレフィックス
+
+      # Free up disk space
+      - name: Free Disk Space # ステップ名: ディスクスペースの解放
+        uses: jlumbroso/free-disk-space@main # jlumbroso/free-disk-space アクションを使用
+        with:
+          tool-cache: false # ツールキャッシュの削除を無効にする
+
+      # GameCI の Builder を利用して、
+      # Unity プロジェクトのビルドを実行する
+      - name: Run the macOS build (Apple Silicon) # ステップ名: macOS ビルドの実行（Apple Silicon）
+        uses: game-ci/unity-builder@v4 # game-ci/unity-builder@v4 アクションを使用
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # Unity ライセンス
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }} # Unity アカウントのメールアドレス
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }} # Unity アカウントのパスワード
+        with:
+          # 今回は macOS ビルドを行いたいため StandaloneOSX を指定する
+          targetPlatform: StandaloneOSX # ターゲットプラットフォーム: macOS
+          unityVersion: 2022.3.23f1 # 使用する Unity のバージョン
+          customParameters: -buildTarget StandaloneOSX -arch arm64 # カスタムパラメータ: Apple Silicon アーキテクチャを指定
