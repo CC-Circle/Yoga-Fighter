@@ -65,41 +65,35 @@ pip3でmediapipeをインストール(venvをActivateした状態で行ってく
 ```
 
 4. 実行する
-必要な環境が整ったら、プロジェクトとしてYoga_Detectionを実行する。<br>
+必要な環境が整ったら、Yoga_Detection -> test.pyを実行する。<br>
 Webカメラが起動して、姿勢推定が実行されます。結果が画面に出力されます。
 ```cmd
-(venv) Yoga-Fighter % python3 -m Yoga_Detection
-Hello from cli.py
+(venv) Yoga_PoseDetection % python3 test.py
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1717045308.932401 12707682 gl_context.cc:357] GL version: 2.1 (2.1 Metal - 76.3), renderer: Apple M1
+I0000 00:00:1718861906.018309 18529329 gl_context.cc:357] GL version: 2.1 (2.1 Metal - 76.3), renderer: Apple M1
 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-W0000 00:00:1717045309.007347 12707732 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
-W0000 00:00:1717045309.018417 12707732 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
-Capture Size ------------------------------
-width:  1280.0
-height:  720.0
--------------------------------------------
-/Users/学籍番号/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/google/protobuf/symbol_database.py:55: UserWarning: SymbolDatabase.GetPrototype() is deprecated. Please use message_factory.GetMessageClass() instead. SymbolDatabase.GetPrototype() will be removed soon.
+W0000 00:00:1718861906.106623 18529441 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+W0000 00:00:1718861906.123921 18529441 inference_feedback_manager.cc:114] Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors.
+/Users/k22137kk/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/google/protobuf/symbol_database.py:55: UserWarning: SymbolDatabase.GetPrototype() is deprecated. Please use message_factory.GetMessageClass() instead. SymbolDatabase.GetPrototype() will be removed soon.
   warnings.warn('SymbolDatabase.GetPrototype() is deprecated. Please '
 ```
-プログラムの終了は、Controlキー + C で終了してください。以下のような警告が出ますが、プログラムが終了します。
+プログラムの終了は、'q' or 'Q'で終了してください。'終了'と表示されて、プログラムが終了します。
+上記の方法でプログラムが終了しない場合は、Controlキー + C で終了してください。以下のような警告が出ますが、プログラムが終了します。
 ```cmd
 ^CTraceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/Users/k22137kk/CCC/Yoga-Fighter/Yoga_PoseDetection/__main__.py", line 4, in <module>
-    main()
-  File "/Users/k22137kk/CCC/Yoga-Fighter/Yoga_PoseDetection/cli.py", line 19, in main
-    resultImage = Pose_Landmark.main(image)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/k22137kk/CCC/Yoga-Fighter/Yoga_PoseDetection/mylib/Pose_Landmarks.py", line 109, in main
-    results = self.pose.process(image)
-              ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/k22137kk/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/mediapipe/python/solutions/pose.py", line 185, in process
-    results = super().process(input_data={'image': image})
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/k22137kk/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/mediapipe/python/solution_base.py", line 340, in process
-    self._graph.wait_until_idle()
+  File "/Users/k22137kk/CCC/Yoga-Fighter/Yoga_PoseDetection/test.py", line 180, in <module>
+    pose_landmarks_proto = PL._detect_pose_landmarks(mediapipe_image)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/k22137kk/CCC/Yoga-Fighter/Yoga_PoseDetection/test.py", line 79, in _detect_pose_landmarks
+    detection_result = self.detector.detect(mediapipe_image)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/k22137kk/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/mediapipe/tasks/python/vision/pose_landmarker.py", line 352, in detect
+    output_packets = self._process_image_data({
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/k22137kk/CCC/Yoga-Fighter/venv/lib/python3.12/site-packages/mediapipe/tasks/python/vision/core/base_vision_task_api.py", line 95, in _process_image_data
+    return self._runner.process(inputs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 KeyboardInterrupt
-(venv) Yoga-Fighter % 
+
+(venv) Yoga_PoseDetection % 
 ```
