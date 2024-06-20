@@ -2,7 +2,8 @@
 
 ## 目次
 
-- [インストール](#インストール)
+- [インストール](#環境構築)
+- [PoseLandmarksクラス](#PoseLandmarksクラス)
 
 
 ## 環境構築
@@ -97,3 +98,98 @@ KeyboardInterrupt
 
 (venv) Yoga_PoseDetection % 
 ```
+
+## PoseLandmarksクラス
+
+PoseLandmarksクラス(test.py)の簡単な説明。
+PoseLandmarksクラスを使うことで、画像中の人間のランドマークを取得できる。
+```python
+# PoseLandmarksクラスのインスタンス化。CAM_NUMはカメラ番号、buffer_lenはFPS計算のためのバッファ長。
+    PL = PoseLandmarks(CAM_NUM=0, buffer_len=10)
+    
+    # Detectionクラスのインスタンス化。
+    DT = Detection()
+
+    # カメラからの入力を取得するためのVideoCaptureオブジェクトを作成。
+    cap = cv.VideoCapture(PL.CAM_NUM)
+
+    while cap.isOpened():
+        success, cam_image = cap.read()  # カメラから1フレーム読み込む。
+
+        # もし読み込みに成功しなかった場合はスキップし、次のフレームを試行する。
+        if not success:
+            print("空のカメラフレームを無視します。")
+            continue
+
+        # 現在のFPSを取得。
+        display_fps = PL._get_cvfps()
+
+        # 画像の前処理を行い、Mediapipe用のフォーマットに変換する。
+        mediapipe_image, image_height, image_width = PL._preprocess_image_for_mediapipe(cam_image)
+
+        # ポーズランドマークを検出する。
+        pose_landmarks_proto = PL._detect_pose_landmarks(mediapipe_image)
+
+        # もしポーズランドマークが検出されなかった場合は次のフレームに進む。
+        if pose_landmarks_proto is None:
+            continue
+
+        # ボディイメージにポーズのランドマークを描画する。
+        body_image, success = PL._draw_landmarks_on_image(mediapipe_image, pose_landmarks_proto)
+        if body_image is np.zeros((image_height, image_width, 3)):
+            print("body_image is None")
+
+        # ランドマークのみ表示する背景イメージを作成する。
+        bg_image = np.zeros((image_height, image_width, 3))
+        landmark_image, success = PL._draw_landmarks_on_image(bg_image, pose_landmarks_proto)
+        if landmark_image is np.zeros((image_height, image_width, 3)):
+            print("landmark_image is None")
+
+        # Detectionクラスのメソッドを使用して、ポーズランドマークの情報を更新し、
+        # イメージの幅と高さを提供する。
+        DT._update_BodyLandmarks_dict(pose_landmarks_proto, image_width, image_height)
+
+        # ボディイメージおよびランドマークイメージにFPSを表示する。
+        PL._fps_visualization(body_image, display_fps)
+        PL._fps_visualization(landmark_image, display_fps)
+
+        # ウィンドウにボディイメージを表示する。
+        cv.imshow('Body', body_image)
+        # ウィンドウにランドマークイメージを表示する。
+        cv.imshow('Landmark', landmark_image)
+
+        # キーボードの入力を待機し、'q'が押された場合はプログラムを終了する。
+        key = cv.waitKey(5)
+        if key == ord('q') or key == ord('Q'):
+            print('終了')
+            break
+
+    # 全てのウィンドウを閉じる。
+    cv.destroyAllWindows()
+```
+
+## Detectionクラスの簡単な説明
+
+Detectionクラスを使うことで、PoseLandmarksで取得したランドマークを分析して、人間がどのようなポーズを取っているかを判定できます。
+
+```python
+# Detectionクラスのインスタンス化。
+DT = Detection()
+
+# Detectionクラスのメソッドを使用して、ポーズランドマークの情報を更新し、
+# イメージの幅と高さを提供する。
+DT._update_BodyLandmarks_dict(pose_landmarks_proto, image_width, image_height)
+
+# ポーズが「Tree Pose」に似ているかどうかを確認し、結果を出力する。
+# successはPoseLandmarksクラスの```_draw_landmarks_on_image(self, image, pose_landmarks_proto)```関数が成功しているかを表している。
+if DT._tree_pose_UpperBody() and success:
+  print("Tree Pose")
+else:
+  print("Not Tree Pose")
+```
+
+大まかなプログラムの流れは以下の通りです。
+1. OpenCVの機能を使用して、Webカメラから画像を取得する。
+2. PoseLandmarksの関数で、ランドマークデータ（pose_landmarks_proto）を取得する。
+3. Detectionクラスの関数で、人間のポーズを推定する。
+4. OpenCVの機能を使用して、ランドマークデータを画面に描画
