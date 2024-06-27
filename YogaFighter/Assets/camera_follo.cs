@@ -20,7 +20,7 @@ public class camera_follo : MonoBehaviour
 
         //if (Input.GetKey(KeyCode.Space))
         //{
-            transform.position = new Vector3(0f, set_segment.top_position.y + 3f, set_segment.top_position.z - 5f);
+            transform.position = new Vector3(0f, set_segment.top_position.y + 1.5f, set_segment.top_position.z - 5f);
         //}
     }
 }

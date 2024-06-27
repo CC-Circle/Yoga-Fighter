@@ -118,5 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8669bc57bcebb4cc48a81cffdd90f38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  branchPrefab: {fileID: 550971444049018917}
-  nextCubePrefab: {fileID: 550971444049018917}
+  left_limit: -3
+  right_limit: 3
