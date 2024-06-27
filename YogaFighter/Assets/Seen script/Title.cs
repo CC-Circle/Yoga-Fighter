@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Title : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Debug.Log("ゴール画面です。");
     }
