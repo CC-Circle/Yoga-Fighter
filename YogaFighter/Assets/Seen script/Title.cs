@@ -8,13 +8,12 @@ public class Title : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("ゴール画面です。");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("ゴール画面です。");
         if((Input.GetKeyDown(KeyCode.Space)))
         {
             SceneManager.LoadScene("Title");
