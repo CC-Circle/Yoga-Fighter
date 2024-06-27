@@ -15,12 +15,12 @@ public class Goal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //Debug.Log(set_segment.top_position.y);
-        Debug.Log("GG");
         if(set_segment.top_position.y >= goal) {
             // Debug.Log("これ"+set_segment.top_position.y);
-            Debug.Log("hogehoge");
-            SceneManager.LoadScene("Goal Seen");
+            // Debug.Log("hogehoge");
+            SceneManager.LoadScene("Goal");
         }
     }
 }

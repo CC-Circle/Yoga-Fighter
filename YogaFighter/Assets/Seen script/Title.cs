@@ -14,6 +14,7 @@ public class Title : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("ゴール画面です。");
         if((Input.GetKeyDown(KeyCode.Space)))
         {
             SceneManager.LoadScene("Title");
