@@ -2383,7 +2383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9c5b182e8e843df8421f1a0c1d6d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube_obj: {fileID: 550971444049018917, guid: 14a421d709e514f38a9421d1bcbd8323, type: 3}
+  cube_obj: {fileID: 2986815384033673886, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
   branch_obj: {fileID: 550971444049018917, guid: 6440e7de773864f72b189d6d91fa4ed3, type: 3}
   branch_obj2: {fileID: 550971444049018917, guid: 0cb6be25fac3f40d2ab768c97eb620f0, type: 3}
 --- !u!850595691 &1877351756
@@ -2666,6 +2666,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2704,6 +2716,10 @@ PrefabInstance:
     - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438173529676735667, guid: e8dfaf162af59407487da7270d35d5d4, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

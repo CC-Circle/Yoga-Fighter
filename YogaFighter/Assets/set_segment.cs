@@ -7,7 +7,7 @@ public class set_segment : MonoBehaviour
     public GameObject cube_obj;
     public GameObject branch_obj;
     public GameObject branch_obj2;
-    float add_value = 0.19f;
+    float add_value = 0.29f;
 
     public static Vector3 top_position;
 
@@ -49,7 +49,7 @@ public class set_segment : MonoBehaviour
 
 
             y_value += add_value;
-            obj = Instantiate(cube_obj, new Vector3(next_position.x - 0.5f, transform.position.y + y_value, transform.position.z), Quaternion.identity);
+            obj = Instantiate(cube_obj, new Vector3(next_position.x+0.475f, transform.position.y + y_value, transform.position.z), Quaternion.identity);
 
             branch_count++;
             if(branch_count %5 == 0)
@@ -89,6 +89,7 @@ public class set_segment : MonoBehaviour
         }
 
         top_position = topPosition;
+        top_position.x = topPosition.x + 0.475f;
         return topPosition;
     }
 }
