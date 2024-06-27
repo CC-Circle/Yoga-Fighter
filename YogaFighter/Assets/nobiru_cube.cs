@@ -30,16 +30,38 @@ public class nobiru_cube : MonoBehaviour
             // 十字キー入力による成長方向の制御
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                growthDirection = 1.0f;
+
+                if (set_segment.top_position.x > -0.5)
+                {
+                    growthDirection = 1.0f;
+                }
+                
+                //if (set_segment.top_position.x > -2.5)
+                //{
+                //    growthDirection = 1.0f;
+                //}
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                growthDirection = -1.0f;
+
+                if (set_segment.top_position.x < 0.5)
+                {
+                    growthDirection = -1.0f;
+                }
+                
+
+                //growthDirection = -1.0f;
             }
             else
             {
                 //growthDirection = 0.0f;
             }
+
+            //if (set_segment.top_position.x > -0.5)
+            //{
+            //    growthDirection = 1.0f;
+            //}
+
 
             // Y軸方向に頂点を移動
             for (int i = 0; i < vertices.Length; i++)

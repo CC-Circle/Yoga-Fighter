@@ -9,7 +9,7 @@ public class set_segment : MonoBehaviour
     public GameObject branch_obj2;
     float add_value = 0.19f;
 
-    
+    public static Vector3 top_position;
 
     private Vector3[] vertices;
     private Mesh mesh;
@@ -28,6 +28,11 @@ public class set_segment : MonoBehaviour
 
         // コルーチンを開始
         StartCoroutine(RepeatedCoroutine());
+    }
+
+    private void Update()
+    {
+        GetTopPosition(obj);
     }
 
     IEnumerator RepeatedCoroutine()
@@ -65,7 +70,6 @@ public class set_segment : MonoBehaviour
         }
     }
 
-
     Vector3 GetTopPosition(GameObject in_obj)
     {
         Vector3 topPosition = Vector3.zero;
@@ -84,6 +88,7 @@ public class set_segment : MonoBehaviour
             }
         }
 
+        top_position = topPosition;
         return topPosition;
     }
 }

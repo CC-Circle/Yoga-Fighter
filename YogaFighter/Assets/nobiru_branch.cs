@@ -81,9 +81,6 @@ public class nobiru_branch : MonoBehaviour
         }
     }
 
-
-
-
     Vector3 GetTopPosition(GameObject in_obj)
     {
         Vector3 topPosition = Vector3.zero;
