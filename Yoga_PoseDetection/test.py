@@ -159,7 +159,7 @@ class PoseLandmarks:
         #    print(f"Exception occurred: {e}")
 
 if __name__ == '__main__':
-    PL = PoseLandmarks(CAM_NUM=1, buffer_len=10)
+    PL = PoseLandmarks(CAM_NUM=0, buffer_len=10)
     DT = Detection()
 
     # カメラから入力画像を取得
