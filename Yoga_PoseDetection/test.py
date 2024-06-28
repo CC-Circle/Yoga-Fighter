@@ -164,6 +164,11 @@ if __name__ == '__main__':
 
     # カメラから入力画像を取得
     cap = cv.VideoCapture(PL.CAM_NUM)
+    if not cap.isOpened():
+        print("カメラをオープンできません。")
+        print("カメラ番号が正しいか確認してください。")
+        print("カメラ番号:", PL.CAM_NUM)
+        exit()
     # カメラが起動するまで1秒待つ
     cv.waitKey(1000)
 
