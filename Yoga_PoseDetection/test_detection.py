@@ -1,5 +1,6 @@
 from collections import namedtuple
 import math
+import socket
 from decimal import Decimal, getcontext
 from mediapipe.framework.formats import landmark_pb2
 
@@ -68,13 +69,18 @@ class Detection:
         if self.BodyLandmarks_dict["left_elbow"].y > avg_shoulder_y or self.BodyLandmarks_dict["right_elbow"].y > avg_shoulder_y:
             #大きかったら、木のポーズでないと判断
             return tree_pose
+        # else:
+            # print("肘が肩より上にある")
+        
         
         # 右肘と左肘のy座標が鼻のy座標よりも小さいか確認
         if self.BodyLandmarks_dict["left_elbow"].y > self.BodyLandmarks_dict["nose"].y or self.BodyLandmarks_dict["right_elbow"].y > self.BodyLandmarks_dict["nose"].y:
             # 大きかったら、木のポーズでないと判断
             return tree_pose
+        # else:
+            # print("肘が鼻より上にある")
         
-
+        
         # 右手と左手のy座標が右肘と左肘よりも小さいか確認
         # 右手の検出されているランドマークのy座標の平均を計算
         coordinates_right = [self.BodyLandmarks_dict["right_wrist"].y, self.BodyLandmarks_dict["right_pinky"].y, self.BodyLandmarks_dict["right_index"].y, self.BodyLandmarks_dict["right_thumb"].y]
@@ -85,22 +91,31 @@ class Detection:
         if right_hand_y > self.BodyLandmarks_dict["right_elbow"].y or left_hand_y > self.BodyLandmarks_dict["left_elbow"].y:
             # 大きかったら、木のポーズでないと判断
             return tree_pose
+        #else:
+            #print("手が肘より上にある")
 
-        # 右手と左手のx座標が右肩と左肩のx座標の間にあるか確認
+        # 右手と左手のx座標の差が一定の範囲内にあるか確認
         coordinates_right = [self.BodyLandmarks_dict["right_wrist"].x, self.BodyLandmarks_dict["right_pinky"].x, self.BodyLandmarks_dict["right_index"].x, self.BodyLandmarks_dict["right_thumb"].x]
         coordinates_left = [self.BodyLandmarks_dict["left_wrist"].x, self.BodyLandmarks_dict["left_pinky"].x, self.BodyLandmarks_dict["left_index"].x, self.BodyLandmarks_dict["left_thumb"].x]
-
         # 右手と左手のx座標を計算
         right_hand_x = self._calculate_average(coordinates_right)
         left_hand_x = self._calculate_average(coordinates_left)
 
+        #print("右手と左手のx座標の差: ", abs(right_hand_x - left_hand_x))
+        if abs(right_hand_x - left_hand_x) > 0.06:
+            # 大きかったら、木のポーズでないと判断
+            return tree_pose
+        #else:
+            #print("右手と左手のx座標の差が一定の範囲内にある")
+
+        
         # 右手と左手のx座標が右肩と左肩のx座標の間にあるか確認
         #avg_shoulder_x = (self.BodyLandmarks_dict["left_shoulder"].x + self.BodyLandmarks_dict["right_shoulder"].x) / 2.0
         #if right_hand_x > avg_shoulder_x or left_hand_x < avg_shoulder_x:
             # 大きかったら、木のポーズでないと判断
         #    return tree_pose
         
-
+        '''
         print("-------------------------------------------")
         print("Tree Pose")
         print("右肩: ", self.BodyLandmarks_dict["right_shoulder"].x)
@@ -108,6 +123,18 @@ class Detection:
         print("右手:" , right_hand_x)
         print("左手:" , left_hand_x)
         print("-------------------------------------------")
+        '''
+        # すべての条件を満たしていたら、木のポーズと判断
+        tree_pose = True
+
+        # 右手と左手のx座標の平均値を計算
+        avg_hand_x = (right_hand_x + left_hand_x) / 2.0 * 100
+        # 小数点以下切り捨て
+        avg_hand_x = math.floor(avg_hand_x)
+        # 送信
+        self.send_udp_data(str(avg_hand_x))
+        print("右手と左手のx座標の平均値: ", avg_hand_x)
+
         return tree_pose
     
     def _calculate_average(self, coordinates) -> float:
@@ -124,6 +151,13 @@ class Detection:
         if valid_coords:
             return sum(valid_coords) / len(valid_coords)
         return None
+    
+    def send_udp_data(self, avg_hand_x, server_ip='127.0.0.1', server_port=5005):
+        # UDPソケットの作成
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # データを送信
+        client_socket.sendto(avg_hand_x.encode(), (server_ip, server_port))
 
 if __name__ == "__main__":
     print("Debug directly from __main__.py")
