@@ -131,6 +131,12 @@ class Detection:
         avg_hand_x = (right_hand_x + left_hand_x) / 2.0 * 100
         # 小数点以下切り捨て
         avg_hand_x = math.floor(avg_hand_x)
+
+        if(avg_hand_x < 0):
+            avg_hand_x = 0
+        elif(avg_hand_x > 100):
+            avg_hand_x = 100
+        
         # 送信
         self.send_udp_data(str(avg_hand_x))
         print("右手と左手のx座標の平均値: ", avg_hand_x)
@@ -153,6 +159,9 @@ class Detection:
         return None
     
     def send_udp_data(self, avg_hand_x, server_ip='127.0.0.1', server_port=5005):
+        if avg_hand_x is None:
+            return
+
         # UDPソケットの作成
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
