@@ -164,10 +164,13 @@ if __name__ == '__main__':
 
     # カメラから入力画像を取得
     cap = cv.VideoCapture(PL.CAM_NUM)
+    # カメラが起動するまで1秒待つ
+    cv.waitKey(1000)
 
     while cap.isOpened():
         tick = cv.getTickCount()
         success, cam_image = cap.read()
+
         if not success:
             print("空のカメラフレームを無視します。")
             continue
