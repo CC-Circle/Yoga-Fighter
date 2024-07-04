@@ -211,6 +211,7 @@ if __name__ == '__main__':
             print("Tree Pose")
         else:
             print("Not Tree Pose")
+            DT.send_udp_data(None)
 
         # FPSを画像に表示
         PL._fps_visualization(body_image, display_fps)
