@@ -159,11 +159,12 @@ class Detection:
         return None
     
     def send_udp_data(self, avg_hand_x, server_ip='127.0.0.1', server_port=5005):
-        if avg_hand_x is None:
-            return
-
         # UDPソケットの作成
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        if avg_hand_x is None:
+            avg_hand_x = "-1"
+            client_socket.sendto(avg_hand_x.encode(), (server_ip, server_port))
 
         # データを送信
         client_socket.sendto(avg_hand_x.encode(), (server_ip, server_port))
