@@ -132,10 +132,16 @@ class Detection:
         # 小数点以下切り捨て
         avg_hand_x = math.floor(avg_hand_x)
 
-        if(avg_hand_x < 0):
-            avg_hand_x = 0
-        elif(avg_hand_x > 100):
-            avg_hand_x = 100
+        # 30~70の範囲内に収める
+        if(avg_hand_x < 30):
+            avg_hand_x = 30
+        elif(avg_hand_x > 70):
+            avg_hand_x = 70
+
+        # 30~70の範囲内に収めた値を0~100の範囲にスケーリング
+        avg_hand_x = (avg_hand_x - 30) * 100 / 40
+        # 小数点以下切り捨て
+        avg_hand_x = math.floor(avg_hand_x)
         
         # 送信
         self.send_udp_data(str(avg_hand_x))
