@@ -217,6 +217,11 @@ if __name__ == '__main__':
         PL._fps_visualization(body_image, display_fps)
         PL._fps_visualization(landmark_image, display_fps)
 
+
+        # body_imageとlandmark_imageに線を描画
+        cv.line(body_image, (170, 0), (170, image_height), (0, 0, 255), 3)
+        cv.line(body_image, (image_width - 170, 0), (image_width-170, image_height), (0, 0, 255), 3)
+
         
         cv.imshow('Body', body_image)
         cv.imshow('Landmark', landmark_image)
