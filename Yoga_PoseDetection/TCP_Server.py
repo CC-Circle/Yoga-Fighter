@@ -76,11 +76,5 @@ if __name__ == "__main__":
     server_thread.start()
 
     while True:
-        #print(server._get_Flag())
-        if server.Flag:  # Flagの状態をチェックするために、インスタンス変数を使用
-            #print("a")
-            pass
-        else:
-            pass
-            #print("b")
-        #time.sleep(0.01)
+        print("SceneMode: ", server._get_SceneMode())
+        time.sleep(0.01)
