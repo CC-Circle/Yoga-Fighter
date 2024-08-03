@@ -34,6 +34,8 @@ class Detection:
         self.image_width = 300.0
         self.image_height = 300.0
 
+        self.avg_hand_x = -1
+
     def _update_BodyLandmarks_dict(self, pose_landmarks_proto, image_width, image_height) -> None:
         self.image_width = image_width
         self.image_height = image_height
@@ -144,7 +146,8 @@ class Detection:
         avg_hand_x = math.floor(avg_hand_x)
         
         # 送信
-        self.send_udp_data(str(avg_hand_x))
+        #self.send_udp_data(str(avg_hand_x))
+        self._set_avg_hand_x(avg_hand_x)
         print("右手と左手のx座標の平均値: ", avg_hand_x)
 
         return tree_pose
@@ -163,6 +166,12 @@ class Detection:
         if valid_coords:
             return sum(valid_coords) / len(valid_coords)
         return None
+    
+    def _set_avg_hand_x(self, avg_hand_x) -> None:
+        self.avg_hand_x = avg_hand_x
+    
+    def _get_avg_hand_x(self) -> int:
+        return self.avg_hand_x
     
     def send_udp_data(self, avg_hand_x, server_ip='127.0.0.1', server_port=5005):
         # UDPソケットの作成

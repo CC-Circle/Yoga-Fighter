@@ -218,7 +218,8 @@ if __name__ == '__main__':
             print("Tree Pose")
         else:
             print("Not Tree Pose")
-            DT.send_udp_data(None)
+            DT._set_avg_hand_x(-1)
+            #DT.send_udp_data(None)
 
         # FPSを画像に表示
         PL._fps_visualization(body_image, display_fps)
@@ -233,6 +234,12 @@ if __name__ == '__main__':
         cv.imshow('Landmark', landmark_image)
 
         print("Scene Mode:", TCP._get_SceneMode())
+        if TCP._get_SceneMode() >= 0:
+            avg_hand_x = DT._get_avg_hand_x()
+            if avg_hand_x is not None:
+                TCP.send_data_to_client(str(avg_hand_x))
+                print("Send data to client:", avg_hand_x)
+
         
 
         key = cv.waitKey(5)
@@ -241,3 +248,5 @@ if __name__ == '__main__':
             break
 
     cv.destroyAllWindows()
+    TCP.running = False
+    TCP.close_connections()
