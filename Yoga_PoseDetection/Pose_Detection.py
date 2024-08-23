@@ -179,10 +179,12 @@ class Detection:
 
         if avg_hand_x is None:
             avg_hand_x = "-1"
-            client_socket.sendto(avg_hand_x.encode(), (server_ip, server_port))
+            client_socket.sendto(avg_hand_x.encode(), (server_ip, 5005))
+            client_socket.sendto(avg_hand_x.encode(), (server_ip, 5006))
 
         # データを送信
-        client_socket.sendto(avg_hand_x.encode(), (server_ip, server_port))
+        client_socket.sendto(str(avg_hand_x).encode(), (server_ip, 5005))
+        client_socket.sendto(str(avg_hand_x).encode(), (server_ip, 5006))
 
 if __name__ == "__main__":
     print("Debug directly from __main__.py")
