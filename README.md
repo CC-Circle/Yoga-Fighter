@@ -1,4 +1,4 @@
-# ヨガファイター
+# Image processing system to detect yoga pose “Tree Pose
 
 ## 目次
 
